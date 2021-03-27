@@ -1,3 +1,4 @@
+from django.http.response import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from main.forms import walkrequestform
 from main.models import walkrequest
@@ -7,7 +8,8 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import AuthenticationForm
-
+from django.core import serializers
+from django.http import JsonResponse
 # Create your views here.
 
 
@@ -16,36 +18,38 @@ def home(request):
 
     if request.method == "POST":
         form = walkrequestform(request.POST)
+        data = "thank you"
         if form.is_valid():
             form = form.save()
 
-        return render(request,'main/home.html', {'form':form })
+        return render(request, 'main/home.html', {'form': form, "data": data})
 
     if request.method == "GET":
         form = walkrequestform()
 
-        return render(request,'main/home.html', {'form':form })
-
+        return render(request, 'main/home.html', {'form': form})
 
 
 def dashboard(request):
     walk = walkrequest.objects.all()
-    return render(request,'main/dashboard.html', {'walk':walk })
+    return render(request, 'main/dashboard.html', {'walk': walk})
+
 
 def done(request):
     walk = walkrequest.objects.all()
-    return render(request,'main/done.html', {'walk':walk })
+    return render(request, 'main/done.html', {'walk': walk})
 
 
 def walkdetails(request, walkrequest_pk):
     walk = get_object_or_404(walkrequest, pk=walkrequest_pk)
     if request.method == "GET":
         form = walkrequestform(instance=walk)
-        return render(request, 'main/walkdetails.html',{'walk':walk, 'form':form})
+        return render(request, 'main/walkdetails.html', {'walk': walk, 'form': form})
     else:
         form = walkrequestform(request.POST, instance=walk)
         form.save()
         return redirect('dashboard')
+
 
 def walkcompleted(request, walkrequest_pk):
     walkrequest = get_object_or_404(walkrequest, pk=walkrequest_pk)
@@ -55,17 +59,20 @@ def walkcompleted(request, walkrequest_pk):
             return redirect('home')
 
 
-
-
-
-
+def get(request):
+    if request.is_ajax and request.method == "GET":
+        walk = walkrequest.objects.all()
+        data = walk
+        return HttpResponse(data)
+    return HttpResponse({'message': 'Wrong Validation'})
 
 
 def loginuser(request):
     if request.method == 'GET':
         return render(request, 'main/loginuser.html', {'form': AuthenticationForm()})
     else:
-        user = authenticate(request, username=request.POST['username'], password=request.POST['password'])
+        user = authenticate(
+            request, username=request.POST['username'], password=request.POST['password'])
         if user is None:
             return render(request, 'main/loginuser.html', {'form': AuthenticationForm(), 'error': 'Username and password did not match. '})
         else:

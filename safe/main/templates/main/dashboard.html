@@ -1,26 +1,8 @@
-{% for walk in walk %}
-{% if walk.completed == False %}
+{% load static %}
 
-<h4>{{walk.name}} {{walk.phone}}</h4>
-<small>{{walk.timerecived}}</small>
-<h5>from : {{walk.fromlocation}}</h5>
-<h5>to : {{walk.tolocation}}</h5>
+<div ></div>
+  <h5 class="content-data">{{ data.phone }}</h5>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-
-
-<a href="{% url 'walkdetails' walk.id %}"> details </a>
-
-{% endif %}
-
-
-
-
----------------------------------------
-
-
-
-
-
-
-
-{% endfor %}
+  <script src="{% static '/main.js' %}"></script>
+</div>

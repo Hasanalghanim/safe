@@ -23,7 +23,11 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('loginuser/', views.loginuser, name='login'),
     path('dashboard', views.dashboard, name='dashboard'),
+    path('dashboard/get', views.get, name='walkdata'),
+
     path('done', views.done, name='done'),
+
+
 
 
     path('walk/<int:walkrequest_pk>', views.walkdetails, name='walkdetails'),
