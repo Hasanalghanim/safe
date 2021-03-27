@@ -10,7 +10,7 @@ class walkrequest(models.Model):
     fromlocation    = models.CharField(max_length=100, blank=False)
     tolocation      = models.CharField(max_length=100, blank=False)
     timerecived     = models.DateTimeField(auto_now_add=True)
-    completed       = models.BooleanField(blank=True)
+    completed       = models.BooleanField()
 
 
     def __str__(self):

@@ -7,3 +7,6 @@ class walkrequestform(forms.ModelForm):
     class Meta:
         model = walkrequest
         fields = '__all__'
+
+
+    completed = forms.BooleanField(required=False)

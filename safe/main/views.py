@@ -1,6 +1,7 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from main.forms import walkrequestform
 from main.models import walkrequest
+from django.utils import timezone
 
 
 from django.contrib.auth.models import User
@@ -17,19 +18,47 @@ def home(request):
         form = walkrequestform(request.POST)
         if form.is_valid():
             form = form.save()
-            data = "form saved"
-        return render(request,'main/home.html', {'data':data, 'form':form })
+
+        return render(request,'main/home.html', {'form':form })
 
     if request.method == "GET":
         form = walkrequestform()
-        data = "do the form"
-        return render(request,'main/home.html', {'data':data, 'form':form })
+
+        return render(request,'main/home.html', {'form':form })
 
 
 
 def dashboard(request):
     walk = walkrequest.objects.all()
     return render(request,'main/dashboard.html', {'walk':walk })
+
+def done(request):
+    walk = walkrequest.objects.all()
+    return render(request,'main/done.html', {'walk':walk })
+
+
+def walkdetails(request, walkrequest_pk):
+    walk = get_object_or_404(walkrequest, pk=walkrequest_pk)
+    if request.method == "GET":
+        form = walkrequestform(instance=walk)
+        return render(request, 'main/walkdetails.html',{'walk':walk, 'form':form})
+    else:
+        form = walkrequestform(request.POST, instance=walk)
+        form.save()
+        return redirect('dashboard')
+
+def walkcompleted(request, walkrequest_pk):
+    walkrequest = get_object_or_404(walkrequest, pk=walkrequest_pk)
+    if request.method == 'POST':
+        if walkrequest.is_valid():
+            walkrequest = walkrequest.save()
+            return redirect('home')
+
+
+
+
+
+
 
 
 def loginuser(request):

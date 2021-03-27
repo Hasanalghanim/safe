@@ -22,5 +22,10 @@ urlpatterns = [
 
     path('', views.home, name='home'),
     path('loginuser/', views.loginuser, name='login'),
-    path('dashboard', views.dashboard, name='dashboard')
+    path('dashboard', views.dashboard, name='dashboard'),
+    path('done', views.done, name='done'),
+
+
+    path('walk/<int:walkrequest_pk>', views.walkdetails, name='walkdetails'),
+    path('walk/<int:walkrequest_pk>/completed', views.walkcompleted, name='walkcompleted'),
 ]
