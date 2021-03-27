@@ -5,8 +5,15 @@
   {% csrf_token %}
   {{ form.as_p }}
 
-<button type="submit" name="button">submit</button>
+  <button type="submit" name="button">submit</button>
 </form>
 
 
+
+
+
 {{data }}
+
+
+
+<a href="{% url 'login' %}">Login</a>
