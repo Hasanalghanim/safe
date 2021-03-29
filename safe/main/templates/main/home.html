@@ -1,7 +1,9 @@
-<form class="" action="" method="POST">
+{% extends 'main/base.html'%} {% load static %} {% block content %}
+
+<form class="col s8" action="" method="POST">
   {% csrf_token %}
 
-  <h5>Name: {{ form.name }}</h5>
+  <h5 class="input-field col s6">Name: {{ form.name }}</h5>
   <h5>Phone #: {{ form.phone }}</h5>
   <h5>From : {{ form.fromlocation }}</h5>
   <h5>to : {{ form.tolocation }}</h5>
@@ -12,3 +14,5 @@
 <h4>{{ data }}</h4>
 
 <a href="{% url 'login' %}">Login</a>
+
+{% endblock%}

@@ -1,5 +1,5 @@
-{% for walk in walk %}
-{% if walk.completed == True  %}
+{% extends 'main/base.html'%} {% load static %} {% block content %} {% for walk
+in walk %}
 
 <h4>{{walk.name}} {{walk.phone}}</h4>
 <small>recieved at : {{walk.timerecived}}</small>
@@ -7,19 +7,4 @@
 <h5>from : {{walk.fromlocation}}</h5>
 <h5>to : {{walk.tolocation}}</h5>
 
-
-
-{% endif %}
-
-
-
-
----------------------------------------
-
-
-
-
-
-
-
-{% endfor %}
+{% endfor %} {% endblock%}

@@ -32,11 +32,14 @@ def home(request):
 
 def dashboard(request):
     walk = walkrequest.objects.all()
-    return render(request, 'main/dashboard.html', {'walk': walk})
+    if request.is_ajax():
+        return render(request, 'main/dashboard/.html', {'walk': walk})
+    else:
+        return render(request, 'main/dashboard.html', {'walk': walk})
 
 
 def done(request):
-    walk = walkrequest.objects.all()
+    walk = walkrequest.objects.filter(completed=True)
     return render(request, 'main/done.html', {'walk': walk})
 
 
@@ -60,11 +63,12 @@ def walkcompleted(request, walkrequest_pk):
 
 
 def get(request):
-    if request.is_ajax and request.method == "GET":
-        walk = walkrequest.objects.all()
-        data = walk
-        return HttpResponse(data)
-    return HttpResponse({'message': 'Wrong Validation'})
+    if request.is_ajax or request.method == "GET":
+        walk = walkrequest.objects.filter(completed=False)
+        data = serializers.serialize('json', walk, fields=(
+            'name', 'phone', 'fromlocation', 'tolocation', 'timerecived', 'completed'))
+        return HttpResponse(data, content_type="application/json")
+    return HttpResponse({'message': 'Wrong Validation'}, status=400)
 
 
 def loginuser(request):
