@@ -10,6 +10,13 @@
     <link
       type="text/css"
       rel="stylesheet"
+      href="{% static 'styles.css' %}"
+      media="screen,projection"
+    />
+
+    <link
+      type="text/css"
+      rel="stylesheet"
       href="{% static 'materialize/css/materialize.css' %}"
       media="screen,projection"
     />
@@ -18,16 +25,22 @@
   </head>
 
   <body>
-    <nav>
-      <div class="nav-wrapper">
-        <a href="{% url 'home' %}" class="brand-logo">Logo</a>
+    {% if user.is_authenticated %}
+    <nav style="background-color: white">
+      <div class="nav-wrapper container">
+        <a href="{% url 'home' %}" style="color: black" class="brand-logo"
+          >Safewalk</a
+        >
+
         <ul id="nav-mobile" class="right hide-on-med-and-down">
-          <li><a href="{% url 'login' %}">Sass</a></li>
-          <li><a href="{% url 'dashboard' %}">Components</a></li>
+          <li>
+            <a style="color: black" href="{% url 'dashboard' %}">Dashboard</a>
+          </li>
         </ul>
       </div>
     </nav>
-    <div>{% block content %} {% endblock content %}</div>
+    {% endif %}
+    <div class="">{% block content %} {% endblock content %}</div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="{% static '/main.js' %}"></script>

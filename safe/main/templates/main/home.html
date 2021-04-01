@@ -1,15 +1,51 @@
 {% extends 'main/base.html'%} {% load static %} {% block content %}
 
-<form class="col s8" action="" method="POST">
-  {% csrf_token %}
+<div class="row">
+  <div class="col s12 m8 l8 center-align">
+    <h2 class="">SAFEWALK</h2>
+    <p>Why Walk Alone? We'll walk with you</p>
+    <img src="{% static 'people.png' %}" alt="" class="responsive-img" />
+  </div>
 
-  <h5 class="input-field col s6">Name: {{ form.name }}</h5>
-  <h5>Phone #: {{ form.phone }}</h5>
-  <h5>From : {{ form.fromlocation }}</h5>
-  <h5>to : {{ form.tolocation }}</h5>
+  <div class="col s12 m4 l4">
+    <div class="main-form">
+      <div class="form-words center-align">
+        <h4>Lets Walk</h4>
+        <p>To request a walk</p>
+        <p>Please fill in the following details</p>
+      </div>
 
-  <button type="submit" name="button" href="{% url 'home' %}">submit</button>
-</form>
+      <form class="input-field" method="POST">
+        {% csrf_token %}
+        <div class="input-field">
+          <label for="id_name">Name</label>
+          {{ form.name }}
+        </div>
+        <div class="input-field">
+          <label for="id_phone">Phone</label>
+          {{ form.phone }}
+        </div>
+        <div class="input-field">
+          <label for="id_fromlocation">From</label>
+          {{ form.fromlocation }}
+        </div>
+        <div class="input-field">
+          <label for="id_tolocation">to</label>
+          {{form.tolocation }}
+        </div>
+
+        <button
+          class="submit-btn waves-effect btn"
+          type="submit"
+          name="button"
+          href="{% url 'home' %}"
+        >
+          submit
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
 
 <h4>{{ data }}</h4>
 

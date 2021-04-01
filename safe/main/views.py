@@ -2,8 +2,7 @@ from django.http.response import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from main.forms import walkrequestform
 from main.models import walkrequest
-from django.utils import timezone
-
+from django.contrib.auth.decorators import login_required
 
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
@@ -30,6 +29,7 @@ def home(request):
         return render(request, 'main/home.html', {'form': form})
 
 
+@login_required(login_url='login')
 def dashboard(request):
     walk = walkrequest.objects.all()
     if request.is_ajax():
@@ -38,11 +38,13 @@ def dashboard(request):
         return render(request, 'main/dashboard.html', {'walk': walk})
 
 
+@login_required(login_url='login')
 def done(request):
     walk = walkrequest.objects.filter(completed=True)
     return render(request, 'main/done.html', {'walk': walk})
 
 
+@login_required(login_url='login')
 def walkdetails(request, walkrequest_pk):
     walk = get_object_or_404(walkrequest, pk=walkrequest_pk)
     if request.method == "GET":
@@ -54,6 +56,7 @@ def walkdetails(request, walkrequest_pk):
         return redirect('dashboard')
 
 
+@login_required(login_url='login')
 def walkcompleted(request, walkrequest_pk):
     walkrequest = get_object_or_404(walkrequest, pk=walkrequest_pk)
     if request.method == 'POST':
@@ -62,6 +65,7 @@ def walkcompleted(request, walkrequest_pk):
             return redirect('home')
 
 
+@login_required(login_url='login')
 def get(request):
     if request.is_ajax or request.method == "GET":
         walk = walkrequest.objects.filter(completed=False)
@@ -82,3 +86,12 @@ def loginuser(request):
         else:
             login(request, user)
             return redirect('dashboard')
+
+
+login_required(login_url='login')
+
+
+def logoutuser(request):
+    if request == "POST":
+        logout(request)
+    return redirect(home)
