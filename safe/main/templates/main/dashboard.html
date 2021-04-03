@@ -1,20 +1,39 @@
 {% extends 'main/base.html'%} {% load static %} {% block content %}
-<div class="container" id="id_data"></div>
+
+<div class="container" id="id_data">
+  <div style="margin: 20%" class="center-align">
+    <div class="preloader-wrapper big active">
+      <div class="spinner-layer spinner-blue-only">
+        <div class="circle-clipper left">
+          <div class="circle"></div>
+        </div>
+        <div class="gap-patch">
+          <div class="circle"></div>
+        </div>
+        <div class="circle-clipper right">
+          <div class="circle"></div>
+        </div>
+      </div>
+    </div>
+    <h4>loading</h4>
+  </div>
+</div>
 
 <script>
   function walkTemplate(walkData) {
     return `
     <div class="row">
-        <div class="col s6 ">
+        <div class="col s12 ">
             <div class="card-panel teal">
 
                 <h6> name: ${walkData.fields.name}</h6> <span> Call recived: ${walkData.fields.timerecived}</span>
                 <h6> phone number:  ${walkData.fields.phone}</h6>
                 <h6> From:  ${walkData.fields.fromlocation}</h6>
                 <h6> to: ${walkData.fields.tolocation}</h6>
-            </div> 
-        </div>  
-    </div>  
+                <a href="{% url 'walkdetails' ${walkData.pk} %}" >Check</a>
+            </div>
+        </div>
+    </div>
     `;
   }
 
