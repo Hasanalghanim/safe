@@ -33,7 +33,7 @@ def home(request):
 def dashboard(request):
     walk = walkrequest.objects.all()
     if request.is_ajax():
-        return render(request, 'main/dashboard/.html', {'walk': walk})
+        return render(request, 'main/dashboard.html', {'walk': walk})
     else:
         return render(request, 'main/dashboard.html', {'walk': walk})
 
@@ -52,23 +52,21 @@ def walkdetails(request, walkrequest_pk):
         return render(request, 'main/walkdetails.html', {'walk': walk, 'form': form})
     else:
         form = walkrequestform(request.POST, instance=walk)
-        form.save()
+        if form.is_valid():
+            form.save()
         return redirect('dashboard')
 
 
-@login_required(login_url='login')
 def walkcompleted(request, walkrequest_pk):
-    walkrequest = get_object_or_404(walkrequest, pk=walkrequest_pk)
+    walk = get_object_or_404(walkrequest, pk=walkrequest_pk)
     if request.method == 'POST':
-        if walkrequest.is_valid():
-            walkrequest = walkrequest.save()
-            return redirect('home')
+        walk.save()
+    return redirect('dashboard')
 
 
-@login_required(login_url='login')
 def get(request):
     if request.is_ajax or request.method == "GET":
-        walk = walkrequest.objects.filter(completed=False)
+        walk = walkrequest.objects.filter(date_completed=None)
         data = serializers.serialize('json', walk, fields=(
             'name', 'phone', 'fromlocation', 'tolocation', 'timerecived', 'completed'))
         return HttpResponse(data, content_type="application/json")

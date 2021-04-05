@@ -1,17 +1,22 @@
-<form class="" action="" method="POST">
-  {% csrf_token %}
+{% extends 'main/base.html'%} {% load static %} {% block content %}
 
+<form class="" method="POST">
+  {% csrf_token %}
 
   <h4>name : {{form.name}} phone #: {{form.phone}}</h4>
   <small> {{ walk.timerecived }}</small>
   <h6>from : {{form.fromlocation}}</h6>
-  <h6> to : {{form.tolocation}}</h6>
-  <h5>comepletd ? {{ form.completed}} </h5>
+  <h6>to : {{form.tolocation}}</h6>
+  <p>
+    <label>
+      <input type="checkbox" />
+      <span> {{form.completed}} completed </span>
+    </label>
+  </p>
 
-
-
-  <button type="submit" name="button" href="{% url 'walkcompleted' walk.id %}"> comeplete </button>
-
-
-
+  <button type="submit" name="button" href="{% url 'walkcompleted' walk.id %}">
+    comeplete
+  </button>
 </form>
+
+{% endblock %}

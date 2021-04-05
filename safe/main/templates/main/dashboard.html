@@ -1,21 +1,41 @@
 {% extends 'main/base.html'%} {% load static %} {% block content %}
 
-<div class="container" id="id_data">
-  <div style="margin: 20%" class="center-align">
-    <div class="preloader-wrapper big active">
-      <div class="spinner-layer spinner-blue-only">
-        <div class="circle-clipper left">
-          <div class="circle"></div>
+<!-- Main Nav-->
+<div class="row dashboardBg">
+  <div class="col s3 opacity sideside">
+    <h4 class="center-align">SafeWalk</h4>
+
+    <ul style="margin-top: 20%; border-bottom: 1px solid white" class="row">
+      <li class="">
+        <a class="col s12 sidebarlinks" href="{% url 'dashboard' %}"
+          >Dashboard</a
+        >
+        <a class="col s12 sidebarlinks" href="{% url 'done' %}"
+          >Completed walks</a
+        >
+      </li>
+    </ul>
+  </div>
+  <!-- Main content -->
+  <div class="col s9 right dashboardTitle">
+    <div class="container z-depth-4 dashboardCards" id="id_data">
+      <div style="margin: 20%" class="center-align">
+        <div class="preloader-wrapper big active">
+          <div class="spinner-layer spinner-blue-only">
+            <div class="circle-clipper left">
+              <div class="circle"></div>
+            </div>
+            <div class="gap-patch">
+              <div class="circle"></div>
+            </div>
+            <div class="circle-clipper right">
+              <div class="circle"></div>
+            </div>
+          </div>
         </div>
-        <div class="gap-patch">
-          <div class="circle"></div>
-        </div>
-        <div class="circle-clipper right">
-          <div class="circle"></div>
-        </div>
+        <h4>loading</h4>
       </div>
     </div>
-    <h4>loading</h4>
   </div>
 </div>
 
@@ -23,15 +43,28 @@
   function walkTemplate(walkData) {
     return `
     <div class="row">
-        <div class="col s12 ">
-            <div class="card-panel teal">
+        <div class="col s12">
+            <div class="row" style="padding-left: 10%">
+              <div class="col s6">
+                <h6> name: ${walkData.fields.name}</h6> 
+                <h6> phone number: ${walkData.fields.phone}</h6>
+              </div>
 
-                <h6> name: ${walkData.fields.name}</h6> <span> Call recived: ${walkData.fields.timerecived}</span>
-                <h6> phone number:  ${walkData.fields.phone}</h6>
+              <div class="col s6">
                 <h6> From:  ${walkData.fields.fromlocation}</h6>
                 <h6> to: ${walkData.fields.tolocation}</h6>
-                <a href="{% url 'walkdetails' ${walkData.pk} %}" >Check</a>
+
+                <button type="button" class="btn btn-success" onclick="$('#complete').click()">Complete</button>
+                <form  style='display: none;' method="POST" action="walk/${walkData.pk}/completed">
+                  {% csrf_token %}
+                  <button id="complete" type="submit">Complete</button>
+                </form>
+                
+
+              
+              </div>
             </div>
+            <div class="divider"></div>
         </div>
     </div>
     `;
@@ -49,9 +82,10 @@
         var data = data;
         for (i = 0; i < data.length; i++) {
           document.getElementById("id_data").innerHTML = `
-            <h5 class="container center-align"> Pending Safewalk requests: ${
+            <h3 class="container center-align " style="border-bottom: 1px solid white; width: 100%; margin-top:50px;" > Pending Safewalk requests: ${
               data.length
-            } </h5>
+            } </h3>
+            
             ${data.map(walkTemplate).join("")}
 
 

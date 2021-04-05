@@ -25,7 +25,7 @@
   </head>
 
   <body>
-    {% if user.is_authenticated %}
+    {% comment %} {% if user.is_authenticated %}
     <nav style="background-color: white">
       <div class="nav-wrapper container">
         <a href="{% url 'home' %}" style="color: black" class="brand-logo"
@@ -39,7 +39,7 @@
         </ul>
       </div>
     </nav>
-    {% endif %}
+    {% endif %} {% endcomment %}
     <div class="">{% block content %} {% endblock content %}</div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>

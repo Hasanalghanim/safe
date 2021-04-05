@@ -5,13 +5,12 @@ from django.db.models.fields import DateTimeField
 
 
 class walkrequest(models.Model):
-    name            = models.CharField(max_length=100, blank=False)
-    phone           = models.IntegerField()
-    fromlocation    = models.CharField(max_length=100, blank=False)
-    tolocation      = models.CharField(max_length=100, blank=False)
-    timerecived     = models.DateTimeField(auto_now_add=True)
-    completed       = models.BooleanField()
-
+    name = models.CharField(max_length=100, blank=False)
+    phone = models.IntegerField()
+    fromlocation = models.CharField(max_length=100, blank=False)
+    tolocation = models.CharField(max_length=100, blank=False)
+    timerecived = models.DateTimeField(auto_now_add=True)
+    date_completed = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return self.name
